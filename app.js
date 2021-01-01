@@ -37,5 +37,5 @@ app.delete(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
 });
 
 app.listen(port, () => {
-    console.log(`Express api/webhook app listening at http://localhost:${port}`);
+    console.log(`Polyglot webhook example server listening at http://localhost:${port}`);
 });
