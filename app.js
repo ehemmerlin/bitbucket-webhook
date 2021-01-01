@@ -37,11 +37,6 @@ app.delete(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
     console.log("Full URL:" + url);
 });
 
-app.post('/tweeted', (request, response) => {
-    const { body } = request;
-    console.log(body.tweet);
-});
-
 app.listen(port, () => {
     console.log(`Express api/webhook app listening at http://localhost:${port}`);
 });
