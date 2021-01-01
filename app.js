@@ -11,6 +11,8 @@ app.get(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
 
     console.log("Received GET webhook request");
     console.log("Full URL: " + url);
+
+    response.send("Received GET request. Check the console for more info");
 });
 
 app.post(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
@@ -19,6 +21,8 @@ app.post(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
     console.log("Received POST webhook request to /webhook-receive");
     console.log("Request body:");
     console.log(body);
+
+    response.send("Received POST request. Check the console for more info");
 });
 
 app.put(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
@@ -27,6 +31,8 @@ app.put(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
     console.log("Received PUT webhook request to /webhook-receive");
     console.log("Request body: ");
     console.log(body);
+
+    response.send("Received PUT request. Check the console for more info");
 });
 
 app.delete(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
@@ -34,6 +40,8 @@ app.delete(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
 
     console.log("Received DELETE webhook request");
     console.log("Full URL: " + url);
+
+    response.send("Received DELETE request. Check the console for more info");
 });
 
 app.listen(port, () => {
