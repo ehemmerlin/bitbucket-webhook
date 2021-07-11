@@ -23,7 +23,7 @@ app.get(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
     .then(res => {
         console.log(`statusCode: ${res.statusCode}`)
         console.log(res)
-        console.log("Last commit: " + res.values[Ø].id)
+        console.log("Last commit: " + res.values[0].id)
     })
     .catch(error => {
         console.error(error)
