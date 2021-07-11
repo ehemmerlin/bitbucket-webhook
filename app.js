@@ -27,22 +27,27 @@ app.post(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
 
     if (request.body.changes[0] && request.body.changes[0].type == "ADD" && request.body.changes[0].ref.type == "BRANCH") {
         console.log("New branch created: "+request.body.changes[0].refId)
-        axios.post({
-            url: 'https://bb.plium.club/rest/api/1.0/projects/plium/repos/core/branches',
+
+        var data = {
+            name: "today",
+            startPoint: "017cdd26426ea084dbe16f56c4d8993dfdc706d1"
+          };
+          
+        let header = {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+process.env.BITBUCKET_TOKEN
-            },
-            json: {
-                "name" : "today","startPoint": "017cdd26426ea084dbe16f56c4d8993dfdc706d1"
+                'Authorization': 'Bearer ' + process.env.BITBUCKET_TOKEN
             }
-        }).then(res => {
+          };
+
+        axios.post('https://bb.plium.club/rest/api/1.0/projects/plium/repos/core/branches', data, header)
+        .then(res => {
             console.log(`statusCode: ${res.statusCode}`)
             console.log(res)
-          })
-          .catch(error => {
+        })
+        .catch(error => {
             console.error(error)
-          })
+        })
     }
 
     response.send({
