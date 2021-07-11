@@ -12,6 +12,21 @@ app.get(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
 
     console.log("Received webhook request to /webhook-receive");
     console.log("Full URL: " + url);
+      
+    let header = {
+        headers: {
+            'Authorization': 'Bearer ' + process.env.BITBUCKET_TOKEN
+        }
+      };
+
+    axios.get('https://bb.plium.club/rest/api/1.0/projects/plium/repos/core/commits?until=master', header)
+    .then(res => {
+        console.log(`statusCode: ${res.statusCode}`)
+        console.log(res)
+    })
+    .catch(error => {
+        console.error(error)
+    })
 
     response.send({
         message: "Received GET request. Check the console for more info"
