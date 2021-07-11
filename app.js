@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const axios = require('axios')
+
 app.use(bodyParser.json());
 
 const WEBHOOK_RECEIVE_ENDPOINT = '/webhook-receive';
@@ -25,6 +27,22 @@ app.post(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
 
     if (request.body.changes[0] && request.body.changes[0].type == "ADD" && request.body.changes[0].ref.type == "BRANCH") {
         console.log("New branch created: "+request.body.changes[0].refId)
+        axios.post({
+            url: 'https://bb.plium.club/rest/api/1.0/projects/plium/repos/core/branches',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+process.env.BITBUCKET_TOKEN
+            },
+            json: {
+                "name" : "today","startPoint": "017cdd26426ea084dbe16f56c4d8993dfdc706d1"
+            }
+        }).then(res => {
+            console.log(`statusCode: ${res.statusCode}`)
+            console.log(res)
+          })
+          .catch(error => {
+            console.error(error)
+          })
     }
 
     response.send({
