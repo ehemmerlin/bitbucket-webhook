@@ -23,13 +23,14 @@ app.get(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
     .then(res => {
         console.log(`statusCode: ${res.statusCode}`)
         console.log(res)
+        console.log("Last commit: " + res.values[Ø].id)
     })
     .catch(error => {
         console.error(error)
     })
 
     response.send({
-        message: "Received GET request. Check the console for more info"
+        message: "Received GET request. Check the console for more info."
     });
 });
 
