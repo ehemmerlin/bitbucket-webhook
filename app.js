@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const port = 80;
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
@@ -51,6 +50,6 @@ app.delete(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
         message: "Received DELETE request. Check the console for more info"
     });});
 
-app.listen(port, () => {
-    console.log(`Polyglot webhook example server listening at http://localhost:${port}`);
-});
+// start the server listening for requests
+app.listen(process.env.PORT || 3000, 
+	() => console.log("Server is running..."));
