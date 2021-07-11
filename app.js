@@ -21,9 +21,8 @@ app.get(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
 
     axios.get('https://bb.plium.club/rest/api/1.0/projects/plium/repos/core/commits?until=master', header)
     .then(res => {
-        console.log(`statusCode: ${res.statusCode}`)
         console.log(res)
-        console.log("Last commit: " + res.values[0].id)
+        console.log("Last commit: " + res.data.values[0].id)
     })
     .catch(error => {
         console.error(error)
@@ -58,7 +57,6 @@ app.post(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
 
         axios.post('https://bb.plium.club/rest/api/1.0/projects/plium/repos/core/branches', data, header)
         .then(res => {
-            console.log(`statusCode: ${res.statusCode}`)
             console.log(res)
         })
         .catch(error => {
