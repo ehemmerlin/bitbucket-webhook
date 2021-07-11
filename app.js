@@ -23,6 +23,10 @@ app.post(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
     console.log("Request body:");
     console.log(body);
 
+    if (req.body.data.changes[0] && req.body.data.changes[0].type == "ADD" && req.body.data.changes[0].ref.type == "BRANCH") {
+        console.log("New branch created: "+req.body.data.changes[0].refId)
+    }
+
     response.send({
         message: "Received POST request. Check the console for more info"
     });
