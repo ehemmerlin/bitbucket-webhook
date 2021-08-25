@@ -23,14 +23,6 @@ app.get(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
     console.log("Received webhook request to /webhook-receive");
     console.log("Full URL: " + url);
 
-    client.query("SELECT dependencies.url FROM repositories INNER JOIN dependencies ON repositories.id = dependencies.repository_id WHERE repositories.name='application';", (err, res) => {
-      if (err) throw err;
-      for (let row of res.rows) {
-        console.log(JSON.stringify(row));
-      }
-      client.end();
-    });
-
     response.send({
         message: "Received GET request. Check the console for more info."
     });
@@ -55,37 +47,46 @@ app.post(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
             }
           };
     
-        axios.get('http://bitbucket.plium.club:7990/rest/api/1.0/projects/PIL/repos/core/commits?until=master', headerGet)
-        .then(res => {
-            console.log(res)
-
-            let lastCommit = res.data.values[0].id;
-            console.log("Last commit: " + lastCommit)
-
-            var data = {
-                name: branch,
-                startPoint: lastCommit
-              };
-              
-            let headerPost = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + process.env.BITBUCKET_TOKEN
-                }
-              };
+        client.query("SELECT dependencies.url FROM repositories INNER JOIN dependencies ON repositories.id = dependencies.repository_id WHERE repositories.name='"+request.body.repository.slug+"';", (err, res) => {
+            if (err) throw err;
+                for (let row of res.rows) {
+                    console.log(JSON.stringify(row));
     
-            axios.post('http://bitbucket.plium.club:7990/rest/api/1.0/projects/PIL/repos/core/branches', data, headerPost)
-            .then(res => {
-                console.log(res)
-            })
-            .catch(error => {
-                console.error(error.response)
-            })
+                    axios.get('http://bitbucket.plium.club:7990/rest/api/1.0/projects/'+row.url+'/commits?until=master', headerGet)
+                    .then(res => {
+                        console.log(res)
 
-        })
-        .catch(error => {
-            console.error(error.response)
-        })
+                        let lastCommit = res.data.values[0].id;
+                        console.log("Last commit: " + lastCommit)
+
+                        var data = {
+                            name: branch,
+                            startPoint: lastCommit
+                        };
+
+                        let headerPost = {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + process.env.BITBUCKET_TOKEN
+                            }
+                        };
+
+                        axios.post('http://bitbucket.plium.club:7990/rest/api/1.0/projects/'+row.url+'/branches', data, headerPost)
+                        .then(res => {
+                            console.log(res)
+                        })
+                        .catch(error => {
+                            console.error(error.response)
+                        })
+
+                    })
+                    .catch(error => {
+                        console.error(error.response)
+                    })
+                }
+            client.end();
+        });
+
     }
 
     response.send({
