@@ -37,7 +37,7 @@ app.post(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
             }
           };
     
-        axios.get('https://bitbucket.plium.club/rest/api/1.0/projects/PIL/repos/core/commits?until=master', headerGet)
+        axios.get('http://bitbucket.plium.club:7990/rest/api/1.0/projects/PIL/repos/core/commits?until=master', headerGet)
         .then(res => {
             console.log(res)
 
@@ -56,7 +56,7 @@ app.post(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
                 }
               };
     
-            axios.post('https://bitbucket.plium.club/rest/api/1.0/projects/PIL/repos/core/branches', data, headerPost)
+            axios.post('http://bitbucket.plium.club:7990/rest/api/1.0/projects/PIL/repos/core/branches', data, headerPost)
             .then(res => {
                 console.log(res)
             })
