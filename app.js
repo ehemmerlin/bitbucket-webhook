@@ -16,24 +16,20 @@ const client = new Client({
 });
 
 client.connect();
-console.log("client connected");
-client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
-  if (err) {
-    console.log("Error"+err);
-    throw err;
-  }
-  console.log("for loop");
-  for (let row of res.rows) {
-    console.log(JSON.stringify(row));
-  }
-  client.end();
-});
 
 app.get(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
     const { url } = request;
 
     console.log("Received webhook request to /webhook-receive");
     console.log("Full URL: " + url);
+
+    client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+      if (err) throw err;
+      for (let row of res.rows) {
+        console.log(JSON.stringify(row));
+      }
+      client.end();
+    });
 
     response.send({
         message: "Received GET request. Check the console for more info."
