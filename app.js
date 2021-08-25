@@ -23,7 +23,7 @@ app.get(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
     console.log("Received webhook request to /webhook-receive");
     console.log("Full URL: " + url);
 
-    client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+    client.query("SELECT dependencies.url FROM repositories INNER JOIN dependencies ON repositories.id = dependencies.repository_id WHERE repositories.name='application';", (err, res) => {
       if (err) throw err;
       for (let row of res.rows) {
         console.log(JSON.stringify(row));
