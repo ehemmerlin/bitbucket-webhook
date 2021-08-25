@@ -16,9 +16,13 @@ const client = new Client({
 });
 
 client.connect();
-
+console.log("client connected");
 client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
-  if (err) throw err;
+  if (err) {
+    console.log("Error"+err);
+    throw err;
+  }
+  console.log("for loop");
   for (let row of res.rows) {
     console.log(JSON.stringify(row));
   }
