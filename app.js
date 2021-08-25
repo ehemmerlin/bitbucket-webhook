@@ -2,10 +2,28 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const axios = require('axios')
+const { Client } = require('pg');
 
 app.use(bodyParser.json());
 
 const WEBHOOK_RECEIVE_ENDPOINT = '/webhook-receive';
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+
+client.connect();
+
+client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+  if (err) throw err;
+  for (let row of res.rows) {
+    console.log(JSON.stringify(row));
+  }
+  client.end();
+});
 
 app.get(WEBHOOK_RECEIVE_ENDPOINT, (request, response) => {
     const { url } = request;
